@@ -1,0 +1,60 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+const path = Astro.url.pathname.replace(/\.html$/, '');
+const nav = [
+  { href: '/treatments', label: 'Treatments' },
+  { href: '/about', label: 'About' },
+  { href: '/reviews', label: 'Reviews' },
+  { href: '/areas', label: 'Areas' },
+];
+---
+<header class="hdr" data-hdr>
+  <div class="container hdr__in">
+    <a href="/" class="hdr__logo" aria-label={`${site.name} — home`}><Logo size={34} stacked={false} /></a>
+    <nav class="hdr__nav" aria-label="Main">
+      {nav.map((n) => <a href={n.href} aria-current={path.startsWith(n.href) ? 'page' : undefined}>{n.label}</a>)}
+    </nav>
+    <div class="hdr__cta">
+      <a class="hdr__phone" href={site.phoneHref}><Icon name="phone" /><span>{site.phone}</span></a>
+      <a class="btn hdr__book" href="/book">Book</a>
+      <button class="hdr__burger" aria-expanded="false" aria-controls="mnav" data-burger><span></span><span></span><span class="sr-only">Menu</span></button>
+    </div>
+  </div>
+  <div class="mnav" id="mnav" data-mnav hidden>
+    <nav class="container" aria-label="Mobile">
+      <a href="/">Home</a>
+      {nav.map((n) => <a href={n.href}>{n.label}</a>)}
+      <a href="/book">Book a consultation</a>
+      <a class="mnav__phone" href={site.phoneHref}>{site.phone}</a>
+    </nav>
+  </div>
+</header>
+<style>
+  .hdr { position: fixed; inset: 0 0 auto; z-index: var(--z-header); color: var(--c-silver); transition: background var(--dur-2), transform var(--dur-2) var(--ease-out); }
+  .hdr.is-solid { background: rgba(18, 17, 20, 0.94); }
+  .hdr.is-hidden { transform: translateY(-100%); }
+  .hdr__in { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); height: 76px; }
+  .hdr__logo { text-decoration: none; color: var(--c-silver); }
+  .hdr__nav { display: none; gap: 2.2rem; }
+  .hdr__nav a { text-decoration: none; font-size: 0.95rem; letter-spacing: .02em; opacity: .82; position: relative; }
+  .hdr__nav a:hover, .hdr__nav a[aria-current] { opacity: 1; }
+  .hdr__nav a[aria-current]::after { content: ''; position: absolute; left: 0; right: 0; bottom: -6px; height: 1px; background: var(--c-rose); }
+  .hdr__cta { display: flex; align-items: center; gap: 1rem; }
+  .hdr__phone { display: none; align-items: center; gap: .5rem; text-decoration: none; font-family: var(--f-mono); font-size: .85rem; }
+  .hdr__phone :global(svg) { width: 16px; height: 16px; color: var(--c-rose); }
+  .hdr__book { padding: .7em 1.3em; }
+  .hdr__burger { width: 44px; height: 44px; border: 1px solid var(--c-line-dark); border-radius: 50%; background: none; display: grid; place-content: center; gap: 6px; cursor: pointer; }
+  .hdr__burger span:not(.sr-only) { display: block; width: 18px; height: 1px; background: currentColor; transition: transform var(--dur-1); }
+  .hdr__burger[aria-expanded='true'] span:nth-child(1) { transform: translateY(3.5px) rotate(45deg); }
+  .hdr__burger[aria-expanded='true'] span:nth-child(2) { transform: translateY(-3.5px) rotate(-45deg); }
+  .mnav { background: var(--c-noir); border-top: 1px solid var(--c-line-dark); height: calc(100svh - 76px); }
+  .mnav nav { display: grid; padding-top: var(--s-4); }
+  .mnav a { font-family: var(--f-display); font-size: 2rem; text-decoration: none; padding: .45rem 0; border-bottom: 1px solid var(--c-line-dark); }
+  .mnav .mnav__phone { font-family: var(--f-mono); font-size: 1.1rem; color: var(--c-rose); border: 0; padding-top: 1.2rem; }
+  @media (min-width: 1000px) {
+    .hdr__nav, .hdr__phone { display: flex; }
+    .hdr__burger { display: none; }
+  }
+</style>

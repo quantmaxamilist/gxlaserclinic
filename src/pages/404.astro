@@ -1,0 +1,9 @@
+---
+import Base from '../layouts/Base.astro';
+import InnerHero from '../components/InnerHero.astro';
+---
+<Base title="Page not found | Gerrards Cross Laser Clinic" description="This page couldn’t be found." noindex>
+  <InnerHero eyebrow="404" title="Page not <em>found</em>" lead="The page you’re looking for has moved. Try our treatments or book a consultation.">
+    <div style="display:flex;gap:1rem;flex-wrap:wrap"><a class="btn" href="/treatments">Treatments</a><a class="btn btn--ghost" href="/book">Book</a></div>
+  </InnerHero>
+</Base>

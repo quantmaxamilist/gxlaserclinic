@@ -1,0 +1,116 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { site, treatments, alsoOffered } from '../data/site';
+const key = import.meta.env.PUBLIC_WEB3FORMS_KEY || '';
+const opts = [...treatments.map((t) => ({ v: t.slug, l: t.name })), ...alsoOffered.map((n) => ({ v: n.toLowerCase().replace(/[^a-z]+/g, '-'), l: n }))];
+---
+<Base title="Book a Consultation | Gerrards Cross Laser Clinic" description={`Book a consultation at Gerrards Cross Laser Clinic, ${site.address.street}, Gerrards Cross ${site.address.postcode}. Call ${site.phone} or send a booking request online.`}>
+  <section class="bk dark">
+    <div class="container bk__in">
+      <div class="bk__info">
+        <p class="label"><span class="dot"></span>Book</p>
+        <h1>Book a <em>consultation</em></h1>
+        <a class="bk__tel" href={site.phoneHref}><Icon name="phone" />{site.phone}</a>
+        {site.email && <a class="bk__line" href={`mailto:${site.email}`}><Icon name="mail" />{site.email}</a>}
+        <p class="bk__line"><Icon name="pin" />{site.address.street}, {site.address.locality} {site.address.postcode}</p>
+        <p class="bk__line"><Icon name="clock" />{site.hours}</p>
+        <a class="bk__line" href={site.instagram} target="_blank" rel="noopener"><Icon name="ig" />{site.instagramHandle}</a>
+        <p class="bk__note">Send your details and the clinic will be in touch to confirm your appointment.</p>
+      </div>
+
+      <form class="bk__form" data-form data-key={key} novalidate>
+        <input type="hidden" name="from_name" value="Gerrards Cross Laser Clinic website" />
+        <input type="checkbox" name="botcheck" class="sr-only" tabindex="-1" autocomplete="off" />
+        <fieldset>
+          <legend class="label">Treatments you’re interested in</legend>
+          <div class="chips">
+            {opts.map((o) => (
+              <label class="chip"><input type="checkbox" name="treatments" value={o.l} data-slug={o.v} /><span>{o.l}</span></label>
+            ))}
+          </div>
+        </fieldset>
+        <div class="row">
+          <label class="f"><span class="label">Full name *</span><input name="name" required autocomplete="name" /></label>
+          <label class="f"><span class="label">Phone *</span><input name="phone" type="tel" required autocomplete="tel" /></label>
+        </div>
+        <label class="f"><span class="label">Email *</span><input name="email" type="email" required autocomplete="email" /></label>
+        <div class="row">
+          <label class="f"><span class="label">Preferred date</span><input name="preferred_date" type="date" /></label>
+          <label class="f"><span class="label">Preferred time</span>
+            <select name="preferred_time"><option value="">Any time</option><option>Morning</option><option>Afternoon</option><option>Late afternoon</option></select>
+          </label>
+        </div>
+        <label class="f"><span class="label">Anything we should know?</span><textarea name="message" rows="4"></textarea></label>
+        <label class="consent"><input type="checkbox" name="consent" required value="Yes" /><span>I’m happy for the clinic to contact me about my booking.</span></label>
+        <button class="btn" type="submit">Send booking request <Icon name="arrow" /></button>
+        <p class="status" role="status" aria-live="polite" data-status></p>
+      </form>
+    </div>
+  </section>
+</Base>
+<style>
+  .bk { padding: calc(76px + clamp(3rem, 2rem + 4vw, 6rem)) 0 var(--section); }
+  .bk__in { display: grid; gap: var(--s-5); grid-template-columns: minmax(0, 1fr); }
+  .bk__info { display: grid; gap: var(--s-2); align-content: start; }
+  .bk h1 { font-size: var(--fs-hero); color: var(--c-paper); font-weight: 500; margin-bottom: var(--s-3); }
+  .bk h1 em { font-weight: 400; color: var(--c-blush); }
+  .bk__tel { display: inline-flex; gap: .7rem; align-items: center; font-family: var(--f-display); font-size: var(--fs-display-3); text-decoration: none; color: var(--c-paper); margin-bottom: var(--s-2); }
+  .bk__tel :global(svg) { width: 28px; height: 28px; color: var(--c-rose); }
+  .bk__line { display: flex; gap: .6rem; align-items: center; text-decoration: none; color: var(--c-silver); overflow-wrap: anywhere; }
+  .bk__line :global(svg) { width: 18px; height: 18px; flex: none; color: var(--c-rose); }
+  .bk__note { color: var(--c-silver-dim); margin-top: var(--s-3); max-width: 40ch; }
+  .bk__form { background: var(--c-paper); color: var(--c-ink); border-radius: var(--radius-lg); padding: clamp(1.25rem, 1rem + 2vw, 2.75rem); display: grid; gap: var(--s-3); }
+  fieldset { border: 0; margin: 0; padding: 0; }
+  legend { margin-bottom: var(--s-2); color: var(--c-rose-deep); }
+  .chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .chip input { position: absolute; opacity: 0; pointer-events: none; }
+  .chip span { display: inline-block; padding: .55em 1em; border: 1px solid var(--c-line-light); border-radius: 999px; font-size: .92rem; cursor: pointer; transition: background .2s, color .2s, border-color .2s; }
+  .chip input:checked + span { background: var(--c-noir); color: var(--c-blush); border-color: var(--c-noir); }
+  .chip input:focus-visible + span { outline: 2px solid var(--c-rose); outline-offset: 2px; }
+  .row { display: grid; gap: var(--s-3); grid-template-columns: minmax(0, 1fr); }
+  @media (min-width: 640px) { .row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+  .f { display: grid; gap: .4rem; }
+  .f .label { color: var(--c-ink-soft); }
+  input:not([type=checkbox]), select, textarea { width: 100%; padding: .85em 1em; border: 1px solid var(--c-line-light); border-radius: 12px; background: var(--c-porcelain); }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--c-rose); outline-offset: 0; border-color: transparent; }
+  .consent { display: flex; gap: .6rem; align-items: flex-start; font-size: .92rem; color: var(--c-ink-soft); }
+  .consent input { margin-top: .3em; accent-color: var(--c-rose-deep); }
+  .bk__form .btn { justify-self: start; }
+  .status { min-height: 1.4em; font-weight: 600; }
+  .status.ok { color: #2f7a4f; } .status.err { color: #b3383f; }
+  @media (min-width: 1000px) { .bk__in { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); } }
+</style>
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-form]');
+  if (form) {
+    const pre = new URLSearchParams(location.search).get('package');
+    if (pre) form.querySelectorAll<HTMLInputElement>('input[data-slug]').forEach((i) => { if (i.dataset.slug === pre) i.checked = true; });
+    const status = form.querySelector<HTMLElement>('[data-status]')!;
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      status.className = 'status';
+      if (!form.checkValidity()) { status.textContent = 'Please fill in your name, phone, email and tick the consent box.'; status.classList.add('err'); form.reportValidity(); return; }
+      const key = form.dataset.key;
+      if (!key) { status.textContent = 'Online booking is being set up — please call 01753 885598.'; status.classList.add('err'); return; }
+      const fd = new FormData(form);
+      const chosen = fd.getAll('treatments').join(', ') || 'Not specified';
+      const body = {
+        access_key: key,
+        subject: `New booking request — ${fd.get('name')} (${chosen})`,
+        from_name: fd.get('from_name'), botcheck: fd.get('botcheck') ? true : '',
+        name: fd.get('name'), phone: fd.get('phone'), email: fd.get('email'),
+        treatments: chosen, preferred_date: fd.get('preferred_date') || 'Any', preferred_time: fd.get('preferred_time') || 'Any',
+        message: fd.get('message') || '', consent: 'Yes',
+      };
+      const btn = form.querySelector('button')!; btn.disabled = true; status.textContent = 'Sending…';
+      try {
+        const r = await fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(body) });
+        const j = await r.json();
+        if (!j.success) throw new Error(j.message);
+        form.reset(); status.textContent = 'Thank you — your request has been sent. The clinic will be in touch to confirm.'; status.classList.add('ok');
+      } catch { status.textContent = 'Sorry, that didn’t send. Please call 01753 885598.'; status.classList.add('err'); }
+      btn.disabled = false;
+    });
+  }
+</script>

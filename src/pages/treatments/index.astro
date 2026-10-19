@@ -1,0 +1,22 @@
+---
+import Base from '../../layouts/Base.astro';
+import InnerHero from '../../components/InnerHero.astro';
+import TreatmentGrid from '../../components/TreatmentGrid.astro';
+import BookBand from '../../components/BookBand.astro';
+import { alsoOffered } from '../../data/site';
+---
+<Base title="Treatments | Gerrards Cross Laser Clinic, Buckinghamshire" description="Anti-wrinkle injections, advanced filler, facial profiling, Endolift, hair exosomes and laser hair removal at Gerrards Cross Laser Clinic. Nurse led. Call 01753 885598.">
+  <InnerHero eyebrow="Treatments" title="Nurse-led <em>treatments</em>" lead="Six signature treatments, each starting with a consultation — plus laser rejuvenation, skin boosters and micro-needling." />
+  <section class="section light"><div class="container"><TreatmentGrid /></div></section>
+  <section class="section paper">
+    <div class="container">
+      <p class="label"><span class="dot"></span>Also offered</p>
+      <ul class="also">{alsoOffered.map((t) => <li data-reveal>{t}</li>)}</ul>
+    </div>
+  </section>
+  <BookBand />
+</Base>
+<style>
+  .also { list-style: none; padding: 0; margin: var(--s-4) 0 0; display: flex; flex-wrap: wrap; gap: .6rem; }
+  .also li { font-family: var(--f-display); font-size: var(--fs-display-3); padding: .2em .8em; border: 1px solid var(--c-line-light); border-radius: 999px; }
+</style>

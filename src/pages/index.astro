@@ -1,0 +1,170 @@
+---
+import Base from '../layouts/Base.astro';
+import HeroEtch from '../components/HeroEtch.astro';
+import TreatmentGrid from '../components/TreatmentGrid.astro';
+import Reviews from '../components/Reviews.astro';
+import BookBand from '../components/BookBand.astro';
+import Icon from '../components/Icon.astro';
+import Logo from '../components/Logo.astro';
+import { site, treatments, alsoOffered, areas, reels, portrait } from '../data/site';
+const ticker = [...treatments.map((t) => t.name), ...alsoOffered];
+---
+<Base
+  title="Gerrards Cross Laser Clinic | Laser Hair Removal, Anti-Wrinkle & Filler, Buckinghamshire"
+  description="Nurse-led aesthetics clinic in Gerrards Cross, Buckinghamshire: laser hair removal, anti-wrinkle injections, advanced filler, facial profiling, Endolift and hair exosomes. Call 01753 885598."
+>
+  <HeroEtch />
+
+  <div class="ticker dark-2" aria-hidden="true">
+    <div class="ticker__track">
+      {[0, 1].map(() => <span class="ticker__set">{ticker.map((t) => <span>{t}<i>✦</i></span>)}</span>)}
+    </div>
+  </div>
+
+  <section class="section light" id="treatments" aria-labelledby="t-h">
+    <div class="container">
+      <div class="sh sh--split">
+        <div>
+          <p class="label"><span class="dot"></span>{treatments.length} signature treatments</p>
+          <h2 id="t-h" data-reveal>Treatments, <em class="italic rose-text">nurse led</em></h2>
+        </div>
+        <p data-reveal>Every treatment at {site.name} starts with a consultation. Choose a treatment to see more, or book and tick the treatments you’re interested in.</p>
+      </div>
+      <TreatmentGrid />
+    </div>
+  </section>
+
+  <section class="nurse dark section" aria-labelledby="n-h">
+    <div class="container nurse__in">
+      <figure class="nurse__frame" data-reveal>
+        <div class="nurse__photo"><video class="gx-vid" src={portrait.video} poster={portrait.poster} muted loop playsinline preload="none" width={portrait.w} height={portrait.h} aria-label={`${site.owner}, ${site.award.year} award finalist`}></video></div>
+        <figcaption class="label">{site.owner} · {site.name}</figcaption>
+      </figure>
+      <div class="nurse__copy">
+        <p class="label"><span class="dot"></span>Meet the clinic</p>
+        <h2 id="n-h" data-reveal>Nurse led. <em class="italic">Celeb clinic.</em></h2>
+        <p class="nurse__bio" data-reveal>{site.fullName} — nurse led in advanced aesthetics, laser rejuvenation, laser hair removal, bespoke skin boosters and micro-needling.</p>
+        <div class="award" data-reveal>
+          <span class="award__yr">{site.award.year}</span>
+          <div>
+            <p class="award__t">{site.award.title}</p>
+            <p class="label">{site.owner} · {site.award.body}</p>
+          </div>
+        </div>
+        <a class="btn btn--ghost" href="/about">About the clinic <Icon name="arrow" /></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section paper also" aria-labelledby="a-h">
+    <div class="container">
+      <p class="label"><span class="dot"></span>Also at the clinic</p>
+      <h2 id="a-h" class="also__h" data-reveal>More from the treatment menu</h2>
+      <ul class="also__list">
+        {alsoOffered.map((t, i) => <li data-reveal><span class="label">{String(i + 1).padStart(2, '0')}</span>{t}</li>)}
+      </ul>
+      <a class="btn btn--dark" href="/book">Ask about a treatment <Icon name="arrow" /></a>
+    </div>
+  </section>
+
+  <Reviews />
+
+  <section class="visit light section" aria-labelledby="v-h">
+    <div class="container visit__in">
+      <div>
+        <p class="label"><span class="dot"></span>Visit the clinic</p>
+        <h2 id="v-h" data-reveal>In the heart of <em class="italic rose-text">Gerrards Cross</em></h2>
+        <dl class="visit__dl" data-reveal>
+          <div><dt class="label">Address</dt><dd>{site.address.street}, {site.address.locality}, {site.address.region} {site.address.postcode}</dd></div>
+          <div><dt class="label">Phone</dt><dd><a href={site.phoneHref}>{site.phone}</a></dd></div>
+          <div><dt class="label">Hours</dt><dd>{site.hours}</dd></div>
+        </dl>
+        <a class="btn btn--dark" href={site.googleMaps} target="_blank" rel="noopener">Get directions <Icon name="pin" /></a>
+      </div>
+      <div class="visit__areas" data-reveal>
+        <p class="label">Clients visit us from</p>
+        <ul>{areas.map((a) => <li><a href={`/areas/${a.slug}`}>{a.name}</a></li>)}</ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="ig dark-2 section" aria-labelledby="ig-h">
+    <div class="container ig__in">
+      <div class="ig__copy">
+        <p class="label"><span class="dot"></span>On Instagram</p>
+        <h2 id="ig-h" data-reveal>Straight from <em class="italic">the clinic</em></h2>
+        <p data-reveal>Skin tips, treatments and behind the scenes with {site.owner}.</p>
+        <a class="btn btn--ghost" href={site.instagram} target="_blank" rel="noopener"><Icon name="ig" />{site.instagramHandle}</a>
+      </div>
+      <ul class="ig__reels">
+        {reels.map((r) => (
+          <li data-reveal><a href={`${site.instagram}reel/${r.code}/`} target="_blank" rel="noopener" aria-label="Watch on Instagram">
+            <video class="gx-vid" src={r.video} poster={r.poster} muted loop playsinline preload="none" width="720" height="1280"></video>
+            <span class="ig__play"><Icon name="ig" /></span>
+          </a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <BookBand />
+</Base>
+
+<style>
+  .ticker { overflow: hidden; border-block: 1px solid var(--c-line-dark); padding: 1.1rem 0; }
+  .ticker__track { display: flex; width: max-content; animation: tick 48s linear infinite; }
+  .ticker__set { display: flex; }
+  .ticker__set span { font-family: var(--f-display); font-style: italic; font-size: clamp(1.2rem, 1rem + 1vw, 1.8rem); white-space: nowrap; padding-right: 2rem; }
+  .ticker__set i { font-style: normal; color: var(--c-rose); padding-left: 2rem; font-size: .8em; }
+  @keyframes tick { to { transform: translateX(-50%); } }
+
+  .sh h2 :global(em), h2 em { font-weight: 400; }
+
+  .nurse__in { display: grid; gap: var(--s-5); grid-template-columns: minmax(0, 1fr); align-items: center; }
+  .nurse__frame { margin: 0; display: grid; gap: var(--s-2); }
+  .nurse__photo { overflow: hidden; aspect-ratio: 4 / 5; border: 1px solid var(--c-line-dark); border-radius: var(--radius-lg); background: radial-gradient(120% 80% at 50% 100%, rgba(198,133,137,.16), transparent 60%), var(--c-noir-2); display: grid; place-items: center; color: rgba(230,201,195,.35); max-width: 460px; }
+  .nurse__frame figcaption { color: var(--c-silver-dim); }
+  .nurse__copy { display: grid; gap: var(--s-3); justify-items: start; }
+  .nurse__copy h2 { font-size: var(--fs-display-2); color: var(--c-paper); }
+  .nurse__copy h2 em { color: var(--c-blush); }
+  .nurse__bio { font-size: var(--fs-statement); font-family: var(--f-display); line-height: 1.3; max-width: 30ch; }
+  .award { display: flex; gap: var(--s-3); align-items: center; padding: var(--s-3) var(--s-4); border: 1px solid rgba(198,133,137,.4); border-radius: var(--radius-lg); }
+  .award__yr { font-family: var(--f-display); font-size: 2.6rem; color: var(--c-rose); line-height: 1; }
+  .award__t { font-weight: 650; color: var(--c-paper); }
+  .award .label { color: var(--c-silver-dim); margin-top: .2rem; }
+  @media (min-width: 900px) { .nurse__in { grid-template-columns: minmax(0, .85fr) minmax(0, 1fr); } }
+
+  .also__h { font-size: var(--fs-display-2); margin: var(--s-3) 0 var(--s-5); max-width: 16ch; }
+  .also__list { list-style: none; margin: 0 0 var(--s-5); padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); border-top: 1px solid var(--c-line-light); }
+  .also__list li { display: flex; gap: var(--s-3); align-items: baseline; padding: var(--s-3) 0; border-bottom: 1px solid var(--c-line-light); font-family: var(--f-display); font-size: var(--fs-display-3); }
+  .also__list .label { color: var(--c-rose-deep); font-family: var(--f-mono); }
+
+  .visit__in { display: grid; gap: var(--s-5); grid-template-columns: minmax(0, 1fr); }
+  .visit h2 { font-size: var(--fs-display-2); max-width: 12ch; margin: var(--s-3) 0 var(--s-4); }
+  .visit__dl { margin: 0 0 var(--s-4); display: grid; gap: var(--s-3); }
+  .visit__dl dt { color: var(--c-rose-deep); margin-bottom: .2rem; }
+  .visit__dl dd { margin: 0; font-size: 1.1rem; }
+  .visit__dl a { text-decoration: none; font-family: var(--f-mono); }
+  .visit__areas ul { list-style: none; padding: 0; margin: var(--s-3) 0 0; display: flex; flex-wrap: wrap; gap: .5rem; }
+  .visit__areas a { display: inline-block; padding: .5em 1em; border: 1px solid var(--c-line-light); border-radius: 999px; text-decoration: none; font-size: .92rem; transition: background .2s, color .2s; }
+  .visit__areas a:hover { background: var(--c-noir); color: var(--c-blush); }
+  @media (min-width: 900px) { .visit__in { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; } }
+
+  .nurse__photo video { width: 100%; height: 100%; object-fit: cover; object-position: 30% 50%; }
+  .ig__in { display: grid; gap: var(--s-5); grid-template-columns: minmax(0, 1fr); align-items: center; }
+  .ig__copy { display: grid; gap: var(--s-3); justify-items: start; }
+  .ig__copy h2 { font-size: var(--fs-display-2); color: var(--c-paper); }
+  .ig__copy h2 em { color: var(--c-blush); }
+  .ig__copy p { color: var(--c-silver-dim); }
+  .ig__copy .btn { overflow-wrap: anywhere; }
+  .ig__copy .btn :global(svg) { width: 18px; height: 18px; }
+  .ig__reels { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
+  .ig__reels li:nth-child(2) { transform: translateY(12%); }
+  .ig__reels a { position: relative; display: block; aspect-ratio: 9 / 16; border-radius: var(--radius-lg); overflow: hidden; background: var(--c-noir-3); }
+  .ig__reels video { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease-out); }
+  .ig__reels a:hover video { transform: scale(1.03); }
+  .ig__play { position: absolute; top: .8rem; right: .8rem; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: rgba(18,17,20,.6); color: #fff; }
+  .ig__play :global(svg) { width: 18px; height: 18px; }
+  .ig { padding-bottom: calc(var(--section) + 4rem); }
+  @media (min-width: 900px) { .ig__in { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .ig__reels { max-width: 560px; justify-self: end; width: 100%; } }
+</style>

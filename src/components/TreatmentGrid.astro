@@ -1,0 +1,35 @@
+---
+import TreatmentIcon from './TreatmentIcon.astro';
+import Icon from './Icon.astro';
+import { treatments } from '../data/site';
+---
+<ol class="tg">
+  {treatments.map((t, i) => (
+    <li class="tg__item" data-reveal>
+      <a href={`/treatments/${t.slug}`} class="tg__card">
+        <span class="tg__num label">{String(i + 1).padStart(2, '0')}</span>
+        <span class="tg__icon"><TreatmentIcon slug={t.slug} /></span>
+        <h3 class="tg__name">{t.name}</h3>
+        <p class="tg__sum">{t.summary}</p>
+        <span class="tg__more">View treatment <Icon name="arrow" /></span>
+      </a>
+    </li>
+  ))}
+</ol>
+<style>
+  .tg { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); border-top: 1px solid var(--c-line-light); border-left: 1px solid var(--c-line-light); }
+  .tg__item { border-right: 1px solid var(--c-line-light); border-bottom: 1px solid var(--c-line-light); }
+  .tg__card { position: relative; display: grid; gap: var(--s-2); height: 100%; padding: clamp(1.5rem, 1rem + 2vw, 2.6rem); text-decoration: none; color: inherit; overflow: hidden; isolation: isolate; }
+  .tg__card::before { content: ''; position: absolute; inset: 0; background: var(--c-noir); transform: translateY(101%); transition: transform .5s var(--ease-out); z-index: -1; }
+  .tg__card:hover::before, .tg__card:focus-visible::before { transform: none; }
+  .tg__card:hover, .tg__card:focus-visible { color: var(--c-silver); }
+  .tg__num { color: var(--c-rose-deep); }
+  .tg__icon { width: 56px; height: 56px; color: var(--c-rose-deep); margin: var(--s-2) 0; transition: color .3s; }
+  .tg__card:hover .tg__icon { color: var(--c-blush); }
+  .tg__name { font-size: var(--fs-display-3); }
+  .tg__sum { color: var(--c-ink-soft); font-size: .98rem; transition: color .3s; }
+  .tg__card:hover .tg__sum { color: var(--c-silver-dim); }
+  .tg__more { display: inline-flex; align-items: center; gap: .5rem; margin-top: var(--s-2); font-weight: 650; font-size: .92rem; }
+  .tg__more :global(svg) { width: 16px; height: 16px; transition: transform .3s var(--ease-out); }
+  .tg__card:hover .tg__more :global(svg) { transform: translateX(4px); }
+</style>

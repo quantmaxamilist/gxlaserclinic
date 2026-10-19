@@ -1,0 +1,71 @@
+---
+import Base from '../../layouts/Base.astro';
+import InnerHero from '../../components/InnerHero.astro';
+import BookBand from '../../components/BookBand.astro';
+import TreatmentIcon from '../../components/TreatmentIcon.astro';
+import Icon from '../../components/Icon.astro';
+import { site, treatments, areas } from '../../data/site';
+export function getStaticPaths() { return areas.map((a) => ({ params: { slug: a.slug }, props: { a } })); }
+const { a } = Astro.props;
+const isHome = a.slug === 'gerrards-cross';
+const nearby = areas.filter((x) => x.slug !== a.slug && x.county === a.county).slice(0, 6);
+const title = isHome ? 'Aesthetics &amp; Laser Clinic in <em>Gerrards Cross</em>' : `Aesthetics clinic near <em>${a.name}</em>`;
+const schema = [{ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+  { '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
+  { '@type': 'ListItem', position: 2, name: 'Areas', item: `${site.url}/areas` },
+  { '@type': 'ListItem', position: 3, name: a.name, item: `${site.url}/areas/${a.slug}` } ] }];
+---
+<Base
+  title={`Laser Hair Removal, Anti-Wrinkle & Filler ${isHome ? 'in' : 'near'} ${a.name} | Gerrards Cross Laser Clinic`}
+  description={`Nurse-led aesthetics for clients in ${a.name}, ${a.county}: laser hair removal, anti-wrinkle injections, filler, facial profiling, Endolift and hair exosomes at Gerrards Cross Laser Clinic. Call ${site.phone}.`}
+  schema={schema}
+>
+  <InnerHero eyebrow={`${a.name} · ${a.county}`} title={title} lead={isHome ? `${site.name} is at ${site.address.street}, Gerrards Cross ${site.address.postcode} — nurse led in advanced aesthetics.` : `Clients from ${a.name} visit ${site.name} at ${site.address.street}, Gerrards Cross ${site.address.postcode} — nurse led in advanced aesthetics.`}>
+    <div class="ctas" data-reveal>
+      <a class="btn" href="/book">Book a consultation <Icon name="arrow" /></a>
+      <a class="tel" href={site.phoneHref}><Icon name="phone" />{site.phone}</a>
+    </div>
+  </InnerHero>
+  <section class="section light">
+    <div class="container">
+      <div class="sh"><h2 data-reveal>Treatments for {a.name} clients</h2></div>
+      <ul class="tl">
+        {treatments.map((t) => (
+          <li data-reveal><a href={`/treatments/${t.slug}`}><span class="ico"><TreatmentIcon slug={t.slug} /></span><span><strong>{t.name}{isHome ? '' : ` near ${a.name}`}</strong><small>{t.summary}</small></span></a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+  <section class="section paper">
+    <div class="container vis">
+      <div>
+        <p class="label"><span class="dot"></span>Finding the clinic</p>
+        <p class="vis__addr" data-reveal>{site.address.street}<br />{site.address.locality}, {site.address.region}<br />{site.address.postcode}</p>
+        <a class="btn btn--dark" href={site.googleMaps} target="_blank" rel="noopener">Directions{isHome ? '' : ` from ${a.name}`} <Icon name="pin" /></a>
+      </div>
+      {nearby.length > 0 && (
+        <div>
+          <p class="label">Also serving</p>
+          <ul class="nb">{nearby.map((n) => <li><a href={`/areas/${n.slug}`}>{n.name}</a></li>)}</ul>
+        </div>
+      )}
+    </div>
+  </section>
+  <BookBand title={`Book from ${a.name}`} />
+</Base>
+<style>
+  .ctas { display: flex; flex-wrap: wrap; gap: var(--s-3); align-items: center; margin-top: var(--s-2); }
+  .tel { display: inline-flex; gap: .55rem; align-items: center; text-decoration: none; font-family: var(--f-mono); color: var(--c-silver); }
+  .tel :global(svg) { width: 18px; height: 18px; color: var(--c-rose); }
+  .sh h2 { font-size: var(--fs-display-3); max-width: none; }
+  .tl { list-style: none; padding: 0; margin: 0; display: grid; gap: 0; grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr)); border-top: 1px solid var(--c-line-light); }
+  .tl a { display: flex; gap: var(--s-3); padding: var(--s-3) 0; border-bottom: 1px solid var(--c-line-light); text-decoration: none; }
+  .tl .ico { width: 44px; height: 44px; flex: none; color: var(--c-rose-deep); }
+  .tl strong { display: block; font-family: var(--f-display); font-size: 1.35rem; font-weight: 600; }
+  .tl small { display: block; color: var(--c-ink-soft); font-size: .95rem; margin-top: .2rem; }
+  .vis { display: grid; gap: var(--s-5); grid-template-columns: minmax(0, 1fr); }
+  .vis__addr { font-family: var(--f-display); font-size: var(--fs-statement); line-height: 1.35; margin: var(--s-3) 0 var(--s-4); }
+  .nb { list-style: none; padding: 0; margin: var(--s-3) 0 0; display: flex; flex-wrap: wrap; gap: .5rem; }
+  .nb a { display: inline-block; padding: .5em 1em; border: 1px solid var(--c-line-light); border-radius: 999px; text-decoration: none; }
+  @media (min-width: 900px) { .vis { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+</style>

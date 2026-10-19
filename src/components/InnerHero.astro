@@ -1,0 +1,21 @@
+---
+interface Props { eyebrow: string; title: string; lead?: string }
+const { eyebrow, title, lead } = Astro.props;
+---
+<section class="ih dark">
+  <div class="container ih__in">
+    <p class="label" data-reveal><span class="dot"></span>{eyebrow}</p>
+    <h1 class="ih__h" data-reveal set:html={title} />
+    {lead && <p class="ih__lead" data-reveal>{lead}</p>}
+    <slot />
+  </div>
+  <span class="ih__mark" aria-hidden="true">GX</span>
+</section>
+<style>
+  .ih { position: relative; overflow: hidden; padding: calc(76px + clamp(4rem, 3rem + 6vw, 9rem)) 0 clamp(3.5rem, 2rem + 5vw, 7rem); }
+  .ih__in { position: relative; z-index: 1; display: grid; gap: var(--s-3); }
+  .ih__h { font-size: var(--fs-hero); max-width: 18ch; color: var(--c-paper); }
+  .ih__h :global(em) { color: var(--c-blush); font-weight: 400; }
+  .ih__lead { max-width: 56ch; color: var(--c-silver-dim); font-size: 1.1rem; }
+  .ih__mark { position: absolute; right: -0.05em; top: 50%; transform: translateY(-40%); font-family: var(--f-display); font-weight: 700; font-size: clamp(12rem, 34vw, 32rem); letter-spacing: -0.07em; line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(198, 133, 137, 0.22); pointer-events: none; }
+</style>

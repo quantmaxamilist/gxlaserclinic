@@ -1,0 +1,14 @@
+---
+// bespoke fine-line icons, one per treatment (unique to this build)
+interface Props { slug: string }
+const { slug } = Astro.props;
+---
+<svg class="ti" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" aria-hidden="true">
+  {slug === 'anti-wrinkle-injections' && <g><path d="M10 20c4-3 8-3 12 0s8 3 12 0 6-2 6-2"/><path d="M10 27c4-2 8-2 12 0s8 2 12 0"/><path d="M30 6l12 12M33 9l-6 6M38 14l4-4M27 15l-3 3"/></g>}
+  {slug === 'advanced-filler' && <g><path d="M8 26c5-6 9-8 16-5 7-3 11-1 16 5"/><path d="M8 26c5 6 10 8 16 8s11-2 16-8"/><path d="M8 26h32"/><circle cx="24" cy="12" r="2"/><path d="M24 4v6"/></g>}
+  {slug === 'facial-profiling' && <g><path d="M30 6c-6 0-12 5-12 12l-4 6 4 2-1 5c0 3 2 5 5 5h3v6"/><path d="M36 10v28" stroke-dasharray="2 3"/><path d="M32 18h8M32 26h8M32 34h8"/></g>}
+  {slug === 'endolift' && <g><path d="M10 34c6 4 22 4 28 0"/><path d="M14 30c4 2 16 2 20 0"/><path d="M24 4v20"/><path d="M24 24l-3 4h6z"/><path d="M18 14l-2-2M30 14l2-2M16 20h-3M32 20h3"/></g>}
+  {slug === 'hair-exosomes' && <g><path d="M10 36c2-14 6-22 14-26 8 4 12 12 14 26"/><path d="M17 36c1-10 3-15 7-18 4 3 6 8 7 18"/><circle cx="24" cy="8" r="1.3"/><circle cx="14" cy="14" r="1.3"/><circle cx="34" cy="14" r="1.3"/><path d="M6 40h36"/></g>}
+  {slug === 'laser-hair-removal' && <g><path d="M6 38c8-2 14-2 18 0s10 2 18 0"/><path d="M14 36v-6M20 35v-8M28 35v-6M34 36v-8"/><path d="M30 4 18 24" /><path d="M33 6 21 26" stroke-opacity=".45"/><circle cx="18" cy="25" r="2.4"/></g>}
+</svg>
+<style>.ti { width: 100%; height: 100%; }</style>

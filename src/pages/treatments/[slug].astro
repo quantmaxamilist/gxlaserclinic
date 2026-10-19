@@ -1,0 +1,74 @@
+---
+import Base from '../../layouts/Base.astro';
+import InnerHero from '../../components/InnerHero.astro';
+import BookBand from '../../components/BookBand.astro';
+import TreatmentIcon from '../../components/TreatmentIcon.astro';
+import Icon from '../../components/Icon.astro';
+import { site, treatments, areas } from '../../data/site';
+export function getStaticPaths() {
+  return treatments.map((t, i) => ({ params: { slug: t.slug }, props: { t, next: treatments[(i + 1) % treatments.length] } }));
+}
+const { t, next } = Astro.props;
+const schema = [
+  { '@context': 'https://schema.org', '@type': 'Service', name: t.name, serviceType: t.name, provider: { '@id': `${site.url}/#clinic` }, areaServed: areas.map((a) => a.name), url: `${site.url}/treatments/${t.slug}` },
+  { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
+    { '@type': 'ListItem', position: 2, name: 'Treatments', item: `${site.url}/treatments` },
+    { '@type': 'ListItem', position: 3, name: t.name, item: `${site.url}/treatments/${t.slug}` } ] },
+];
+---
+<Base title={`${t.name} in Gerrards Cross | Gerrards Cross Laser Clinic`} description={`${t.name} at Gerrards Cross Laser Clinic, Buckinghamshire — nurse led, consultation first. Serving Gerrards Cross, Chalfont St Peter, Beaconsfield and nearby. Call ${site.phone}.`} schema={schema}>
+  <InnerHero eyebrow={`Treatment · Gerrards Cross`} title={t.name} lead={t.summary}>
+    <div class="ctas" data-reveal>
+      <a class="btn" href={`/book?package=${t.slug}`}>Book {t.name} <Icon name="arrow" /></a>
+      <a class="tel" href={site.phoneHref}><Icon name="phone" />{site.phone}</a>
+    </div>
+  </InnerHero>
+
+  <section class="section light">
+    <div class="container tr">
+      <div class="tr__icon" data-reveal><TreatmentIcon slug={t.slug} /></div>
+      <div>
+        <p class="label"><span class="dot"></span>At a glance</p>
+        <ul class="tr__pts">{t.points.map((p, i) => <li data-reveal><span class="label">{String(i + 1).padStart(2, '0')}</span>{p}</li>)}</ul>
+        <div class="tr__steps" data-reveal>
+          <h2>How it works</h2>
+          <ol>
+            <li><strong>Book</strong> — online or on {site.phone}.</li>
+            <li><strong>Consultation</strong> — we talk through your goals and suitability.</li>
+            <li><strong>Treatment</strong> — carried out at the clinic in Gerrards Cross.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="nx dark-2">
+    <a class="container nx__in" href={`/treatments/${next.slug}`}>
+      <span class="label">Next treatment</span>
+      <span class="nx__name">{next.name}</span>
+      <Icon name="arrow" />
+    </a>
+  </section>
+
+  <BookBand title={`Book ${t.name}`} treatment={t.slug} />
+</Base>
+<style>
+  .ctas { display: flex; flex-wrap: wrap; gap: var(--s-3); align-items: center; margin-top: var(--s-2); }
+  .tel { display: inline-flex; gap: .55rem; align-items: center; text-decoration: none; font-family: var(--f-mono); color: var(--c-silver); }
+  .tel :global(svg) { width: 18px; height: 18px; color: var(--c-rose); }
+  .tr { display: grid; gap: var(--s-5); grid-template-columns: minmax(0, 1fr); }
+  .tr__icon { width: min(260px, 60vw); aspect-ratio: 1; color: var(--c-rose-deep); padding: 2rem; border: 1px solid var(--c-line-light); border-radius: 50%; }
+  .tr__pts { list-style: none; margin: var(--s-3) 0 var(--s-5); padding: 0; border-top: 1px solid var(--c-line-light); }
+  .tr__pts li { display: flex; gap: var(--s-3); align-items: baseline; padding: var(--s-3) 0; border-bottom: 1px solid var(--c-line-light); font-family: var(--f-display); font-size: var(--fs-display-3); }
+  .tr__pts .label { color: var(--c-rose-deep); }
+  .tr__steps h2 { font-size: var(--fs-statement); margin-bottom: var(--s-2); }
+  .tr__steps ol { margin: 0; padding-left: 1.2rem; display: grid; gap: .5rem; color: var(--c-ink-soft); }
+  .tr__steps strong { color: var(--c-ink); }
+  @media (min-width: 900px) { .tr { grid-template-columns: minmax(0, .7fr) minmax(0, 1.3fr); } }
+  .nx__in { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); padding-top: var(--s-5); padding-bottom: var(--s-5); text-decoration: none; }
+  .nx__in .label { color: var(--c-rose); }
+  .nx__name { font-family: var(--f-display); font-size: var(--fs-display-2); color: var(--c-paper); }
+  .nx__in > :global(svg) { width: 40px; height: 40px; color: var(--c-blush); transition: transform .3s var(--ease-out); }
+  .nx__in:hover > :global(svg) { transform: translateX(8px); }
+</style>

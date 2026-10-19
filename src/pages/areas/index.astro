@@ -1,0 +1,27 @@
+---
+import Base from '../../layouts/Base.astro';
+import InnerHero from '../../components/InnerHero.astro';
+import BookBand from '../../components/BookBand.astro';
+import { areas } from '../../data/site';
+const counties = [...new Set(areas.map((a) => a.county))];
+---
+<Base title="Areas We Serve | Gerrards Cross Laser Clinic" description="Clients visit Gerrards Cross Laser Clinic from Chalfont St Peter, Beaconsfield, Denham, Iver, Stoke Poges, Amersham, Uxbridge, Slough and across Buckinghamshire.">
+  <InnerHero eyebrow="Areas" title="Clients from across <em>Buckinghamshire</em>" lead="The clinic is in Gerrards Cross — within easy reach of the Chalfonts, Beaconsfield, Denham, Iver, Uxbridge, Slough and beyond." />
+  <section class="section light">
+    <div class="container">
+      {counties.map((c) => (
+        <div class="grp">
+          <p class="label"><span class="dot"></span>{c}</p>
+          <ul>{areas.filter((a) => a.county === c).map((a) => <li data-reveal><a href={`/areas/${a.slug}`}>{a.name}</a></li>)}</ul>
+        </div>
+      ))}
+    </div>
+  </section>
+  <BookBand />
+</Base>
+<style>
+  .grp { margin-bottom: var(--s-5); }
+  ul { list-style: none; padding: 0; margin: var(--s-3) 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); border-top: 1px solid var(--c-line-light); }
+  li a { display: block; padding: var(--s-3) 0; border-bottom: 1px solid var(--c-line-light); font-family: var(--f-display); font-size: var(--fs-display-3); text-decoration: none; transition: color .2s, padding .3s var(--ease-out); }
+  li a:hover { color: var(--c-rose-deep); padding-left: .6rem; }
+</style>

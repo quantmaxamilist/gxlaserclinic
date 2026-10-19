@@ -1,0 +1,63 @@
+---
+import Icon from './Icon.astro';
+import { site, reviews } from '../data/site';
+const readUrl = site.googlePlaceId ? `https://search.google.com/local/reviews?placeid=${site.googlePlaceId}` : site.googleMaps;
+const writeUrl = site.googlePlaceId ? `https://search.google.com/local/writereview?placeid=${site.googlePlaceId}` : site.googleMaps;
+interface Props { headingLevel?: 'h1' | 'h2' }
+const { headingLevel = 'h2' } = Astro.props;
+const H = headingLevel;
+---
+<section class="rv paper section" id="reviews" aria-labelledby="rv-h">
+  <div class="container">
+    <div class="sh sh--split">
+      <div>
+        <p class="label"><span class="dot"></span>Google reviews</p>
+        <H id="rv-h" class="rv__h" data-reveal>What clients say on <em class="italic">Google</em></H>
+      </div>
+      <p data-reveal>Read reviews from real clients of {site.name} on Google — and if you’ve visited, we’d love to hear from you.</p>
+    </div>
+
+    <div class="rv__card" data-reveal>
+      <div class="rv__brand">
+        <span class="rv__g"><Icon name="google" /></span>
+        <div>
+          <p class="rv__name">{site.name}</p>
+          <p class="rv__stars" aria-hidden="true">{[1,2,3,4,5].map(() => <Icon name="star" />)}</p>
+          <p class="label rv__sub">Reviews on Google</p>
+        </div>
+      </div>
+      <div class="rv__actions">
+        <a class="btn btn--dark" href={readUrl} target="_blank" rel="noopener">Read our reviews <Icon name="arrow" /></a>
+        <a class="btn btn--ghost" href={writeUrl} target="_blank" rel="noopener">Leave a review</a>
+      </div>
+    </div>
+
+    {reviews.length > 0 && (
+      <ul class="rv__list">
+        {reviews.map((r) => (
+          <li class="rv__item" data-reveal>
+            <p class="rv__stars" aria-label="5 stars">{[1,2,3,4,5].map(() => <Icon name="star" />)}</p>
+            <blockquote>{r.text}</blockquote>
+            <p class="label">{r.name} · {r.date} · Google</p>
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+</section>
+<style>
+  .rv__h { font-size: var(--fs-display-2); max-width: 14ch; }
+  .rv__h em { color: var(--c-rose-deep); }
+  .rv__card { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--s-4); padding: clamp(1.5rem, 1rem + 2.5vw, 3rem); border: 1px solid var(--c-line-light); border-radius: var(--radius-lg); background: var(--c-porcelain); }
+  .rv__brand { display: flex; gap: var(--s-3); align-items: center; }
+  .rv__g { width: 64px; height: 64px; border-radius: 50%; background: #fff; display: grid; place-items: center; box-shadow: 0 8px 30px rgba(18,17,20,.08); }
+  .rv__g :global(svg) { width: 30px; height: 30px; }
+  .rv__name { font-family: var(--f-display); font-size: 1.5rem; }
+  .rv__stars { display: flex; gap: 3px; color: #e7a93c; margin: .3rem 0; }
+  .rv__stars :global(svg) { width: 18px; height: 18px; }
+  .rv__sub { color: var(--c-ink-soft); }
+  .rv__actions { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+  .rv__list { list-style: none; padding: 0; margin: var(--s-5) 0 0; display: grid; gap: var(--s-3); grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); }
+  .rv__item { padding: var(--s-4); border: 1px solid var(--c-line-light); border-radius: var(--radius-lg); display: grid; gap: var(--s-2); }
+  blockquote { margin: 0; font-size: 1.05rem; }
+</style>

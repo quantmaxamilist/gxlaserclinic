@@ -1,0 +1,131 @@
+---
+// Signature moment: a laser line sweeps across and "etches" the GX monogram, then "Laser Clinic" settles beneath.
+// Plays itself once on load (~2.4s), any click/key/scroll skips to the final state, Replay at the end.
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+---
+<section class="hero dark" data-hero>
+  <div class="hero__bg" aria-hidden="true">
+    <video class="hero__video" muted loop playsinline autoplay preload="metadata" poster="/media/hero-laser.jpg">
+      <source src="/media/hero-laser-1080.mp4" type="video/mp4" media="(min-width: 768px)" />
+      <source src="/media/hero-laser-720.mp4" type="video/mp4" />
+    </video>
+    <div class="hero__shade"></div>
+  </div>
+  <div class="hero__glow" aria-hidden="true"></div>
+  <div class="container hero__in">
+    <div class="hero__copy">
+      <p class="label hero__eyebrow"><span class="dot"></span>{site.fullName}</p>
+      <h1 class="hero__h">Nurse led in <em>advanced aesthetics</em></h1>
+      <p class="hero__lead">Laser rejuvenation, laser hair removal, bespoke skin boosters and micro-needling — in Gerrards Cross, Buckinghamshire.</p>
+      <div class="hero__ctas">
+        <a class="btn" href="/book">Book a consultation <Icon name="arrow" /></a>
+        <a class="hero__tel" href={site.phoneHref}><Icon name="phone" /><span>{site.phone}</span></a>
+      </div>
+    </div>
+
+    <div class="etch" data-etch aria-hidden="true">
+      <svg class="etch__svg" viewBox="0 60 600 270" role="presentation">
+        <defs>
+          <linearGradient id="silver" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#f3efeb" />
+            <stop offset=".45" stop-color="#c9c2bc" />
+            <stop offset=".7" stop-color="#f6f1ee" />
+            <stop offset="1" stop-color="#a7a09a" />
+          </linearGradient>
+          <mask id="etch-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="600" height="420">
+            <rect class="etch__maskrect" x="0" y="0" width="600" height="420" fill="#fff" />
+          </mask>
+        </defs>
+        <text class="etch__ghost" x="300" y="300" text-anchor="middle">GX</text>
+        <text class="etch__fill" x="300" y="300" text-anchor="middle" fill="url(#silver)" mask="url(#etch-mask)">GX</text>
+      </svg>
+      <span class="etch__beam"></span>
+      <span class="etch__sub">Laser Clinic</span>
+      <button class="etch__replay" type="button" data-replay tabindex="-1">Replay</button>
+    </div>
+  </div>
+  <a class="hero__scroll label" href="#treatments">Treatments ↓</a>
+</section>
+
+<style>
+  .hero { position: relative; min-height: 100svh; display: grid; align-items: center; overflow: hidden; padding: calc(76px + 3rem) 0 5rem; }
+  .hero__bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+  .hero__video { width: 100%; height: 100%; object-fit: cover; opacity: var(--hero-video-opacity, .42); filter: grayscale(.2) contrast(1.05); }
+  .hero__shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(18,17,20,.82) 0%, rgba(18,17,20,.35) 55%, rgba(18,17,20,.6) 100%), linear-gradient(0deg, var(--c-noir) 0%, transparent 30%); }
+  @media (prefers-reduced-motion: reduce) { .hero__video { display: none; } .hero__bg { background: url(/media/hero-laser.jpg) center / cover; opacity: .28; } }
+  .hero__glow { position: absolute; inset: auto -20% -40% 30%; height: 90%; background: radial-gradient(closest-side, rgba(198,133,137,.22), transparent 70%); pointer-events: none; }
+  .hero__in { position: relative; z-index: 1; display: grid; gap: clamp(2rem, 4vw, 4rem); grid-template-columns: minmax(0, 1fr); align-items: center; }
+  .hero__copy { display: grid; gap: var(--s-3); max-width: 640px; }
+  .hero__eyebrow { color: var(--c-silver-dim); }
+  .hero__h { font-size: var(--fs-hero); color: var(--c-paper); font-weight: 500; max-width: 13ch; }
+  .hero__h em { font-style: italic; font-weight: 400; color: var(--c-blush); }
+  .hero__lead { color: var(--c-silver-dim); max-width: 46ch; font-size: 1.1rem; }
+  .hero__ctas { display: flex; flex-wrap: wrap; gap: var(--s-3); align-items: center; margin-top: var(--s-2); }
+  .hero__tel { display: inline-flex; gap: .6rem; align-items: center; text-decoration: none; font-family: var(--f-mono); font-size: 1.05rem; color: var(--c-silver); }
+  .hero__tel :global(svg) { width: 18px; height: 18px; color: var(--c-rose); }
+  .hero__scroll { position: absolute; left: var(--gutter); bottom: 1.6rem; color: var(--c-silver-dim); text-decoration: none; }
+
+  .etch { position: relative; width: 100%; max-width: 620px; justify-self: center; aspect-ratio: 600 / 340; }
+  .etch__svg { width: 100%; height: auto; overflow: visible; }
+  .etch text { font-family: var(--f-display); font-weight: 700; font-size: 300px; letter-spacing: -22px; font-variation-settings: 'opsz' 96; }
+  .etch__ghost { fill: none; stroke: rgba(217,212,208,.22); stroke-width: 1; }
+  .etch__maskrect { transform-box: fill-box; transform-origin: 0 50%; }
+  .etch__beam { position: absolute; top: 4%; bottom: 14%; left: 0; width: 2px; background: linear-gradient(transparent, #ffd9d6 20%, #fff 50%, #ffd9d6 80%, transparent); box-shadow: 0 0 18px 4px rgba(230,150,150,.55), 0 0 60px 12px rgba(198,133,137,.35); opacity: 0; pointer-events: none; }
+  .etch__sub { position: absolute; left: 0; right: 0; bottom: 0; text-align: center; font-family: var(--f-display); font-style: italic; font-size: clamp(1.4rem, 1rem + 1.6vw, 2.6rem); letter-spacing: .06em; color: var(--c-blush); }
+  .etch__replay { position: absolute; right: 0; bottom: -2.4rem; background: none; border: 1px solid var(--c-line-dark); color: var(--c-silver-dim); border-radius: 999px; padding: .45em 1.1em; font-family: var(--f-mono); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; cursor: pointer; opacity: 0; pointer-events: none; transition: opacity .4s; }
+  .etch.is-done .etch__replay { opacity: 1; pointer-events: auto; }
+
+  /* final state is the default without JS / reduced motion */
+  :global(.js) .etch:not(.is-done) .etch__sub { opacity: 0; }
+
+  @media (min-width: 1000px) {
+    .hero__in { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); }
+    .etch { justify-self: end; }
+  }
+  @media (max-width: 999px) {
+    .hero { align-items: start; }
+    .etch { max-width: 420px; order: -1; margin-bottom: -1rem; }
+    .etch__replay { bottom: auto; top: 0; }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  const root = document.querySelector<HTMLElement>('[data-etch]');
+  const hero = document.querySelector<HTMLElement>('[data-hero]');
+  if (root && hero) {
+    const rect = root.querySelector<SVGRectElement>('.etch__maskrect')!;
+    const beam = root.querySelector<HTMLElement>('.etch__beam')!;
+    const sub = root.querySelector<HTMLElement>('.etch__sub')!;
+    const replay = root.querySelector<HTMLButtonElement>('[data-replay]')!;
+    const copy = hero.querySelectorAll<HTMLElement>('.hero__eyebrow, .hero__h, .hero__lead, .hero__ctas');
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const finish = () => { tl.progress(1); };
+    const tl = gsap.timeline({ paused: true, onComplete: () => { root.classList.add('is-done'); replay.tabIndex = 0; } });
+    tl.set(rect, { scaleX: 0 })
+      .set(sub, { opacity: 0, y: 14 })
+      .set(beam, { opacity: 0, x: 0 })
+      .to(beam, { opacity: 1, duration: 0.18 }, 0)
+      .to(rect, { scaleX: 1, duration: 1.6, ease: 'power2.inOut' }, 0.1)
+      .to(beam, { x: () => root.clientWidth, duration: 1.6, ease: 'power2.inOut' }, 0.1)
+      .to(beam, { opacity: 0, duration: 0.25 }, 1.6)
+      .to(sub, { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' }, 1.75);
+
+    // headline copy settles together once, on a short stagger — never moves during the etch
+    gsap.from(copy, { opacity: 0, y: 18, duration: 0.7, ease: 'power3.out', stagger: 0.06, delay: 0.15, clearProps: 'all' });
+
+    if (reduce) { tl.progress(1); }
+    else {
+      const start = () => tl.restart();
+      const fonts = (document as any).fonts?.ready ?? Promise.resolve();
+      Promise.race([fonts, new Promise((r) => setTimeout(r, 700))]).then(start);
+      const skip = () => { if (tl.isActive()) finish(); };
+      ['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach((ev) => addEventListener(ev, skip, { once: true, passive: true }));
+      // pause off screen
+      new IntersectionObserver(([e]) => { if (!e.isIntersecting && tl.isActive()) tl.pause(); else if (e.isIntersecting && tl.paused() && tl.progress() < 1 && tl.progress() > 0) tl.resume(); }, { threshold: 0.5 }).observe(root);
+    }
+    replay.addEventListener('click', (e) => { e.stopPropagation(); root.classList.remove('is-done'); tl.restart(); });
+  }
+</script>

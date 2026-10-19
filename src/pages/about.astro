@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import InnerHero from '../components/InnerHero.astro';
+import BookBand from '../components/BookBand.astro';
+import Logo from '../components/Logo.astro';
+import Icon from '../components/Icon.astro';
+import { site, treatments, alsoOffered, portrait } from '../data/site';
+---
+<Base title="About | Gerrards Cross Laser Clinic and Training" description={`${site.fullName} — nurse led in advanced aesthetics in Gerrards Cross, Buckinghamshire. ${site.award.year} ${site.award.title}.`}>
+  <InnerHero eyebrow="About the clinic" title="Nurse led in <em>advanced aesthetics</em>" lead={`${site.fullName}, Gerrards Cross, Buckinghamshire.`} />
+  <section class="section light">
+    <div class="container ab">
+      <figure class="ab__frame" data-reveal><div><img src={portrait.poster} width={portrait.w} height={portrait.h} alt={`${site.owner} holding her ${site.award.year} UK Women’s Business Awards finalist certificate`} loading="lazy" /></div><figcaption class="label">{site.owner}</figcaption></figure>
+      <div class="ab__copy">
+        <p class="ab__bio" data-reveal>Nurse led in advanced aesthetics, laser rejuvenation, laser hair removal, bespoke skin boosters and micro-needling.</p>
+        <div class="ab__award" data-reveal>
+          <span>{site.award.year}</span>
+          <div><p><strong>{site.award.title}</strong></p><p class="label">{site.owner} · {site.award.body}</p></div>
+        </div>
+        <p class="label"><span class="dot"></span>Treatment menu</p>
+        <ul class="ab__list">{[...treatments.map((t) => t.name), ...alsoOffered].map((n) => <li>{n}</li>)}</ul>
+        <p class="label"><span class="dot"></span>Training</p>
+        <p data-reveal>The clinic also offers aesthetics training — call {site.phone} to ask about upcoming courses.</p>
+        <a class="btn btn--dark" href={site.instagram} target="_blank" rel="noopener"><Icon name="ig" /> Follow on Instagram</a>
+      </div>
+    </div>
+  </section>
+  <BookBand />
+</Base>
+<style>
+  .ab { display: grid; gap: var(--s-5); grid-template-columns: minmax(0, 1fr); }
+  .ab__frame { margin: 0; display: grid; gap: var(--s-2); }
+  .ab__frame img { width: 100%; height: 100%; object-fit: cover; object-position: 30% 50%; }
+  .ab__frame > div { overflow: hidden; aspect-ratio: 4 / 5; max-width: 440px; border-radius: var(--radius-lg); background: var(--c-noir); color: rgba(230,201,195,.35); display: grid; place-items: center; }
+  .ab__copy { display: grid; gap: var(--s-3); align-content: start; justify-items: start; }
+  .ab__bio { font-family: var(--f-display); font-size: var(--fs-statement); line-height: 1.3; max-width: 30ch; }
+  .ab__award { display: flex; gap: var(--s-3); align-items: center; padding: var(--s-3) var(--s-4); border: 1px solid var(--c-line-light); border-radius: var(--radius-lg); background: var(--c-paper); }
+  .ab__award > span { font-family: var(--f-display); font-size: 2.6rem; color: var(--c-rose-deep); }
+  .ab__list { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: .45rem; }
+  .ab__list li { padding: .35em .9em; border: 1px solid var(--c-line-light); border-radius: 999px; font-size: .92rem; }
+  .ab .btn :global(svg) { width: 18px; height: 18px; }
+  @media (min-width: 900px) { .ab { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); } }
+</style>

@@ -1,0 +1,4 @@
+{ "cleanUrls": true, "trailingSlash": false, "redirects": [
+  { "source": "/botox", "destination": "/treatments/anti-wrinkle-injections", "permanent": true },
+  { "source": "/contact", "destination": "/book", "permanent": true }
+] }

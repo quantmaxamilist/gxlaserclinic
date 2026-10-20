@@ -4,7 +4,6 @@ import InnerHero from '../../components/InnerHero.astro';
 import BookBand from '../../components/BookBand.astro';
 import TreatmentIcon from '../../components/TreatmentIcon.astro';
 import Icon from '../../components/Icon.astro';
-import Results from '../../components/Results.astro';
 import { site, treatments, areas, results } from '../../data/site';
 export function getStaticPaths() {
   return treatments.map((t, i) => ({ params: { slug: t.slug }, props: { t, next: treatments[(i + 1) % treatments.length] } }));
@@ -29,7 +28,22 @@ const schema = [
 
   <section class="section light">
     <div class="container tr">
-      <div class="tr__icon" data-reveal><TreatmentIcon slug={t.slug} /></div>
+      {mine.length > 0 ? (
+        <div class="tr__media" data-reveal data-results>
+          <p class="label"><span class="dot"></span>Before &amp; after</p>
+          <ul class:list={['tr__ba', { 'tr__ba--one': mine.length === 1 }]}>
+            {mine.map((r) => (
+              <li><button class="res__item" type="button" data-full={r.src} data-alt={r.alt} aria-label={`Enlarge: ${r.alt}`}>
+                <img class:list={[{ fit: r.w !== r.h }]} src={r.src} width={r.w} height={r.h} alt={r.alt} loading="lazy" decoding="async" />
+              </button></li>
+            ))}
+          </ul>
+          <p class="tr__note">Real {t.name.toLowerCase()} clients of the clinic. Results vary from person to person. <a href="/results">See all results</a></p>
+          <dialog class="res__lb" aria-label="Before and after photo"><button class="res__close" type="button" aria-label="Close">×</button><img alt="" /></dialog>
+        </div>
+      ) : (
+        <div class="tr__icon" data-reveal><TreatmentIcon slug={t.slug} /></div>
+      )}
       <div>
         <p class="label"><span class="dot"></span>At a glance</p>
         <ul class="tr__pts">{t.points.map((p, i) => <li data-reveal><span class="label">{String(i + 1).padStart(2, '0')}</span>{p}</li>)}</ul>
@@ -44,8 +58,6 @@ const schema = [
       </div>
     </div>
   </section>
-
-  <Results items={mine} title={`${t.name} results`} />
 
   <section class="nx dark-2">
     <a class="container nx__in" href={`/treatments/${next.slug}`}>
@@ -69,10 +81,36 @@ const schema = [
   .tr__steps h2 { font-size: var(--fs-statement); margin-bottom: var(--s-2); }
   .tr__steps ol { margin: 0; padding-left: 1.2rem; display: grid; gap: .5rem; color: var(--c-ink-soft); }
   .tr__steps strong { color: var(--c-ink); }
-  @media (min-width: 900px) { .tr { grid-template-columns: minmax(0, .7fr) minmax(0, 1.3fr); } }
+  @media (min-width: 900px) { .tr { grid-template-columns: minmax(0, .7fr) minmax(0, 1.3fr); } .tr:has(.tr__media) { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 5rem); } }
+  .tr__media { display: grid; gap: var(--s-2); align-content: start; }
+  .tr__media > .label { color: var(--c-rose-deep); }
+  .tr__ba { list-style: none; margin: 0; padding: 0; display: grid; gap: .75rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tr__ba--one { grid-template-columns: minmax(0, 1fr); }
+  .tr__note { font-size: .9rem; color: var(--c-ink-soft); }
+  .tr__note a { color: var(--c-rose-deep); }
+  .res__item { display: block; width: 100%; padding: 0; border: 0; background: var(--c-noir-2); border-radius: var(--radius-lg); overflow: hidden; cursor: zoom-in; aspect-ratio: 1; }
+  .res__item img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease-out); }
+  .res__item img.fit { object-fit: contain; }
+  .res__item:hover img { transform: scale(1.03); }
+  .res__lb { border: 0; padding: 0; background: transparent; max-width: min(92vw, 1100px); max-height: 92vh; }
+  .res__lb::backdrop { background: rgba(18,17,20,.88); }
+  .res__lb img { display: block; max-width: 100%; max-height: 88vh; border-radius: 12px; }
+  .res__close { position: absolute; top: 8px; right: 8px; width: 40px; height: 40px; border-radius: 50%; border: 0; background: rgba(18,17,20,.7); color: #fff; font-size: 1.5rem; cursor: pointer; }
   .nx__in { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); padding-top: var(--s-5); padding-bottom: var(--s-5); text-decoration: none; }
   .nx__in .label { color: var(--c-rose); }
   .nx__name { font-family: var(--f-display); font-size: var(--fs-display-2); color: var(--c-paper); }
   .nx__in > :global(svg) { width: 40px; height: 40px; color: var(--c-blush); transition: transform .3s var(--ease-out); }
   .nx__in:hover > :global(svg) { transform: translateX(8px); }
 </style>
+
+<script>
+  const sec = document.querySelector<HTMLElement>('.tr__media');
+  const dlg = sec?.querySelector<HTMLDialogElement>('.res__lb');
+  const img = dlg?.querySelector('img');
+  if (sec && dlg && img) {
+    sec.querySelectorAll<HTMLButtonElement>('.res__item').forEach((b) => b.addEventListener('click', () => { img.src = b.dataset.full || ''; img.alt = b.dataset.alt || ''; dlg.showModal(); }));
+    dlg.querySelector('.res__close')?.addEventListener('click', () => dlg.close());
+    dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+    document.addEventListener('contextmenu', (e) => { if ((e.target as Element).closest?.('.res__item, .res__lb')) e.preventDefault(); });
+  }
+</script>

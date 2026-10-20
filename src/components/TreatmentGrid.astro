@@ -1,12 +1,13 @@
 ---
 import TreatmentIcon from './TreatmentIcon.astro';
 import Icon from './Icon.astro';
-import { treatments } from '../data/site';
+import { treatments, cardImages } from '../data/site';
 ---
 <ol class="tg">
   {treatments.map((t, i) => (
     <li class="tg__item" data-reveal>
       <a href={`/treatments/${t.slug}`} class="tg__card">
+        {cardImages[t.slug] && <img class="tg__bg" src={cardImages[t.slug]} alt="" aria-hidden="true" loading="lazy" decoding="async" />}
         <span class="tg__num label">{String(i + 1).padStart(2, '0')}</span>
         <span class="tg__icon"><TreatmentIcon slug={t.slug} /></span>
         <h3 class="tg__name">{t.name}</h3>
@@ -20,6 +21,8 @@ import { treatments } from '../data/site';
   .tg { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); border-top: 1px solid var(--c-line-light); border-left: 1px solid var(--c-line-light); }
   .tg__item { border-right: 1px solid var(--c-line-light); border-bottom: 1px solid var(--c-line-light); }
   .tg__card { position: relative; display: grid; gap: var(--s-2); height: 100%; padding: clamp(1.5rem, 1rem + 2vw, 2.6rem); text-decoration: none; color: inherit; overflow: hidden; isolation: isolate; }
+  .tg__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .13; filter: grayscale(.35); z-index: -1; pointer-events: none; transition: opacity .5s var(--ease-out), transform .8s var(--ease-out); -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 45%, rgba(0,0,0,.35) 100%); mask-image: linear-gradient(180deg, #000 0%, #000 45%, rgba(0,0,0,.35) 100%); }
+  .tg__card:hover .tg__bg, .tg__card:focus-visible .tg__bg { opacity: .3; transform: scale(1.04); }
   .tg__card::before { content: ''; position: absolute; inset: 0; background: var(--c-noir); transform: translateY(101%); transition: transform .5s var(--ease-out); z-index: -1; }
   .tg__card:hover::before, .tg__card:focus-visible::before { transform: none; }
   .tg__card:hover, .tg__card:focus-visible { color: var(--c-silver); }

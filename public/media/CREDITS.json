@@ -8,5 +8,14 @@
       "https://www.pexels.com/video/using-modern-devices-for-facial-treatment-4772531/"
     ],
     "note": "Stock, not the clinic's own footage. Swap for Sharon's own clinic footage when available."
+  },
+  "treatment cards": {
+    "licence": "Pexels License",
+    "clips": [
+      "https://www.pexels.com/video/close-up-view-of-a-woman-getting-botox-injection-7581711/ (anti-wrinkle card)",
+      "https://www.pexels.com/photo/applying-hair-serum-with-precision-dropper-28994390/ (hair exosomes card)",
+      "https://www.pexels.com/video/a-woman-getting-a-beauty-treatment-4267992/ (laser hair removal card)"
+    ],
+    "note": "Endolift, filler and facial profiling cards use the clinic\u2019s own before & after photos."
   }
 }

@@ -163,3 +163,13 @@ export const results: Result[] = [
   { src: '/media/results/facial-profiling.jpg', w: 1170, h: 801, treatment: 'Facial profiling', slug: 'facial-profiling', alt: 'Facial profiling before and after, side profile' },
   { src: '/media/results/microneedling.jpg', w: 1600, h: 1600, treatment: 'Micro-needling', alt: 'Micro-needling before and after, cheek skin texture' },
 ];
+
+/** Faded background photo per treatment card. Client photos where we have them; Pexels stock otherwise (see public/media/CREDITS.json). */
+export const cardImages: Record<string, string> = {
+  'anti-wrinkle-injections': '/media/cards/anti-wrinkle.jpg',
+  'advanced-filler': '/media/results/lip-filler.jpg',
+  'facial-profiling': '/media/results/facial-profiling.jpg',
+  'endolift': '/media/results/endolift-jawline.jpg',
+  'hair-exosomes': '/media/cards/hair-exosomes.jpg',
+  'laser-hair-removal': '/media/cards/laser-hair-removal.jpg',
+};

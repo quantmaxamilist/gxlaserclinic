@@ -151,3 +151,15 @@ export const reels = [
   { code: 'DeOShu7IPP4', video: '/media/reel-DeOShu7IPP4.mp4', poster: '/media/reel-DeOShu7IPP4.jpg' },
 ];
 export const portrait = { video: '/media/sharon-award.mp4', poster: '/media/sharon-award.jpg', w: 1076, h: 1056 };
+
+/** Real before & afters sent by the clinic (WhatsApp, Oct 2026). Watermarked with the clinic name. */
+export type Result = { src: string; w: number; h: number; treatment: string; slug?: string; alt: string };
+export const results: Result[] = [
+  { src: '/media/results/endolift-jawline.jpg', w: 1600, h: 1600, treatment: 'Endolift', slug: 'endolift', alt: 'Endolift before and after, jawline and lower face' },
+  { src: '/media/results/endolift-face.jpg', w: 1600, h: 1600, treatment: 'Endolift', slug: 'endolift', alt: 'Endolift before and after, cheek and eye area' },
+  { src: '/media/results/endolift-arms.jpg', w: 1600, h: 1600, treatment: 'Endolift', slug: 'endolift', alt: 'Endolift before and after, back and underarm' },
+  { src: '/media/results/endolift-back.jpg', w: 1600, h: 1600, treatment: 'Endolift', slug: 'endolift', alt: 'Endolift before and after, bra-line area' },
+  { src: '/media/results/lip-filler.jpg', w: 1600, h: 1600, treatment: 'Lip filler', slug: 'advanced-filler', alt: 'Lip filler before and after' },
+  { src: '/media/results/facial-profiling.jpg', w: 1170, h: 801, treatment: 'Facial profiling', slug: 'facial-profiling', alt: 'Facial profiling before and after, side profile' },
+  { src: '/media/results/microneedling.jpg', w: 1600, h: 1600, treatment: 'Micro-needling', alt: 'Micro-needling before and after, cheek skin texture' },
+];

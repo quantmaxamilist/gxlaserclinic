@@ -4,11 +4,13 @@ import InnerHero from '../../components/InnerHero.astro';
 import BookBand from '../../components/BookBand.astro';
 import TreatmentIcon from '../../components/TreatmentIcon.astro';
 import Icon from '../../components/Icon.astro';
-import { site, treatments, areas } from '../../data/site';
+import Results from '../../components/Results.astro';
+import { site, treatments, areas, results } from '../../data/site';
 export function getStaticPaths() {
   return treatments.map((t, i) => ({ params: { slug: t.slug }, props: { t, next: treatments[(i + 1) % treatments.length] } }));
 }
 const { t, next } = Astro.props;
+const mine = results.filter((r) => r.slug === t.slug);
 const schema = [
   { '@context': 'https://schema.org', '@type': 'Service', name: t.name, serviceType: t.name, provider: { '@id': `${site.url}/#clinic` }, areaServed: areas.map((a) => a.name), url: `${site.url}/treatments/${t.slug}` },
   { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
@@ -42,6 +44,8 @@ const schema = [
       </div>
     </div>
   </section>
+
+  <Results items={mine} title={`${t.name} results`} />
 
   <section class="nx dark-2">
     <a class="container nx__in" href={`/treatments/${next.slug}`}>

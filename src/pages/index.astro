@@ -6,6 +6,7 @@ import Reviews from '../components/Reviews.astro';
 import BookBand from '../components/BookBand.astro';
 import Icon from '../components/Icon.astro';
 import Logo from '../components/Logo.astro';
+import Results from '../components/Results.astro';
 import { site, treatments, alsoOffered, areas, reels, portrait } from '../data/site';
 const ticker = [...treatments.map((t) => t.name), ...alsoOffered];
 ---
@@ -56,7 +57,9 @@ const ticker = [...treatments.map((t) => t.name), ...alsoOffered];
     </div>
   </section>
 
-  <section class="section paper also" aria-labelledby="a-h">
+  <Results title="Real results" showLink />
+
+  <section class="section light also" aria-labelledby="a-h">
     <div class="container">
       <p class="label"><span class="dot"></span>Also at the clinic</p>
       <h2 id="a-h" class="also__h" data-reveal>More from the treatment menu</h2>

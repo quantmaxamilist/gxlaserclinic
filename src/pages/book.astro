@@ -2,7 +2,8 @@
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import { site, treatments, alsoOffered } from '../data/site';
-const key = import.meta.env.PUBLIC_WEB3FORMS_KEY || '';
+// Web3Forms access key (public by design — safe in client code). Env var overrides it if set.
+const key = import.meta.env.PUBLIC_WEB3FORMS_KEY || 'ed54a12d-a51e-4210-a842-b62fa7e00f98';
 const opts = [...treatments.map((t) => ({ v: t.slug, l: t.name })), ...alsoOffered.map((n) => ({ v: n.toLowerCase().replace(/[^a-z]+/g, '-'), l: n }))];
 ---
 <Base title="Book a Consultation | Gerrards Cross Laser Clinic" description={`Book a consultation at Gerrards Cross Laser Clinic, ${site.address.street}, Gerrards Cross ${site.address.postcode}. Call ${site.phone} or send a booking request online.`}>

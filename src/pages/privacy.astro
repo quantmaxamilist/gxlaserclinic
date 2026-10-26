@@ -1,0 +1,32 @@
+---
+import Base from '../layouts/Base.astro';
+import InnerHero from '../components/InnerHero.astro';
+import { site } from '../data/site';
+const a = site.address;
+---
+<Base title="Privacy Policy | Gerrards Cross Laser Clinic" description="How Gerrards Cross Laser Clinic uses the information you send through this website.">
+  <InnerHero eyebrow="Legal" title="Privacy <em>policy</em>" lead="Last updated: 26 October 2026" />
+  <section class="section light">
+    <div class="container pv">
+      <h2>Who we are</h2>
+      <p>{site.name} ({site.owner}) is the data controller for information collected through this website. Contact us on {site.phone} or at {a.street}, {a.locality}, {a.region} {a.postcode}.</p>
+      <h2>What we collect</h2>
+      <p>When you use our booking form we collect your name, phone number, email address, preferred date, the treatments you're interested in and any message you add.</p>
+      <h2>Why we use it</h2>
+      <p>To reply to your enquiry and arrange your consultation (steps taken at your request before treatment, and legitimate interests). Information about treatments you're interested in may relate to your health, so we only use it to arrange your consultation and with your consent, which you give when you tick the box on the form.</p>
+      <h2>Who we share it with</h2>
+      <p>Vercel (website hosting) and Web3Forms (delivers the form to our inbox). Some of these providers may process data outside the UK under appropriate safeguards. We never sell your data.</p>
+      <h2>How long we keep it</h2>
+      <p>Enquiries are kept for up to 2 years unless you become a client, in which case your records are kept for as long as needed for your treatment and our legal obligations.</p>
+      <h2>Your rights</h2>
+      <p>You can ask to access, correct or delete your data, withdraw your consent, or object to how we use it by contacting the clinic. You can also complain to the ICO at <a href="https://ico.org.uk" rel="noopener">ico.org.uk</a>.</p>
+      <h2>Cookies</h2>
+      <p>This site does not use advertising or tracking cookies.</p>
+    </div>
+  </section>
+</Base>
+<style>
+  .pv { display: grid; gap: .9rem; max-width: 760px; }
+  .pv h2 { font-size: 1.6rem; margin-top: 1rem; }
+  .pv p { opacity: .85; }
+</style>

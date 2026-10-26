@@ -45,6 +45,7 @@ const opts = [...treatments.map((t) => ({ v: t.slug, l: t.name })), ...alsoOffer
         <label class="f"><span class="label">Anything we should know?</span><textarea name="message" rows="4"></textarea></label>
         <label class="consent"><input type="checkbox" name="consent" required value="Yes" /><span>I’m happy for the clinic to contact me about my booking.</span></label>
         <button class="btn" type="submit">Send booking request <Icon name="arrow" /></button>
+        <p class="privacy-note">By sending this form you agree to our <a href="/privacy">Privacy Policy</a>.</p>
         <p class="status" role="status" aria-live="polite" data-status></p>
       </form>
     </div>
@@ -60,6 +61,8 @@ const opts = [...treatments.map((t) => ({ v: t.slug, l: t.name })), ...alsoOffer
   .bk__tel :global(svg) { width: 28px; height: 28px; color: var(--c-rose); }
   .bk__line { display: flex; gap: .6rem; align-items: center; text-decoration: none; color: var(--c-silver); overflow-wrap: anywhere; }
   .bk__line :global(svg) { width: 18px; height: 18px; flex: none; color: var(--c-rose); }
+  .privacy-note { font-size: .82rem; color: var(--c-muted, #6b6560); }
+  .privacy-note a { color: inherit; }
   .bk__note { color: var(--c-silver-dim); margin-top: var(--s-3); max-width: 40ch; }
   .bk__form { background: var(--c-paper); color: var(--c-ink); border-radius: var(--radius-lg); padding: clamp(1.25rem, 1rem + 2vw, 2.75rem); display: grid; gap: var(--s-3); }
   fieldset { border: 0; margin: 0; padding: 0; }

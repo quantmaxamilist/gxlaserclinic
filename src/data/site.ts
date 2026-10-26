@@ -39,7 +39,7 @@ export const site = {
     title: 'Finalist — Beauty Business Woman of the Year',
     body: 'The UK Women’s Business Awards', // from the certificate in her award reel
   },
-  url: 'https://www.gerrardscrosslc.com',
+  url: 'https://www.gerrardscrosslaserclinic.co.uk',
 };
 
 export type Treatment = {
